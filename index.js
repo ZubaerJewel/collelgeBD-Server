@@ -12,7 +12,7 @@ app.use(express.json())
 
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 // const uri =`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.snwbd1q.mongodb.net/?retryWrites=true&w=majority`;
 const uri = "mongodb+srv://collegesBD:N9DguIf6jVJzyGrs@cluster0.qrbm9en.mongodb.net/?retryWrites=true&w=majority";
 const client = new MongoClient(uri, {
@@ -28,7 +28,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const collegeCollection=client.db('collegeDB').collection('admission')
+    const admissionCollection=client.db('collegeDB').collection('admission')
     const reviewCollection=client.db('collegeDB').collection('reviews')
     const threeCollection=client.db('collegeDB').collection('colleges')
 
@@ -38,13 +38,13 @@ async function run() {
           query={email:req.query.email}
       }
       
-      const result=await collegeCollection.find(query).toArray();
+      const result=await admissionCollection.find(query).toArray();
       res.send(result)
   });
 
     app.post('/addPost',async(req,res)=>{
       const add=req.body;
-      const result=await collegeCollection.insertOne(add)
+      const result=await admissionCollection.insertOne(add)
       res.send(result)
     });
 
@@ -97,9 +97,9 @@ run().catch(console.dir);
 
 
 
-app.get('/colleges',(req,res)=>{
-    res.send(colleges)
-})
+// app.get('/colleges',(req,res)=>{
+//     res.send(colleges)
+// })
 app.get('/sixCollege',(req,res)=>{
   res.send(sixColleges)
 })
