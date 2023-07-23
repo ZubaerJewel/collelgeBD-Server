@@ -3,7 +3,7 @@ const cors = require('cors');
 const app=express()
 const port=process.env.PORT||5000;
 require('dotenv').config()
-const colleges=require('./collegeAdmission.json')
+// const colleges=require('./colleges.json')
 const sixColleges=require('./sixCollege.json')
 
 // middleware
@@ -30,7 +30,7 @@ async function run() {
 
     const collegeCollection=client.db('collegeDB').collection('admission')
     const reviewCollection=client.db('collegeDB').collection('reviews')
-
+    const threeCollection=client.db('collegeDB').collection('colleges')
 
     app.get('/allPost',async(req,res)=>{
       let query={}
@@ -61,7 +61,19 @@ async function run() {
 
 
 
+//three collections
+app.get('/threeCard',async(req,res)=>{
+    const result=await threeCollection.find().toArray();
+    res.send(result)
+  });
 
+  app.get('/threeCard/:id',async(req,res)=>{
+    const id=req.params.id;
+      const query={_id:new ObjectId(id)};
+      const result=await threeCollection.findOne(query);
+      res.send(result)
+
+  })
 
 
 
